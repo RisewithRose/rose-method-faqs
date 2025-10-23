@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rose Method - FAQs</title>
+    <title>ROSE Method - Integration Framework</title>
     <style>
         * {
             margin: 0;
@@ -12,208 +12,359 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            color: #2c3e50;
-            background: #faf9f7;
-            padding: 20px;
+            font-family: 'Georgia', 'Garamond', serif;
+            line-height: 1.7;
+            background: linear-gradient(135deg, #faf9f7 0%, #f5f2ed 100%);
+            color: #3a3a3a;
+            min-height: 100vh;
+            padding: 40px 20px;
         }
         
         .container {
-            max-width: 800px;
+            max-width: 1100px;
             margin: 0 auto;
-            background: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
         header {
             text-align: center;
-            margin-bottom: 50px;
-            padding-bottom: 30px;
-            border-bottom: 2px solid #7d6b5e;
+            margin-bottom: 60px;
+            animation: fadeIn 1s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            color: #5a4a42;
-            font-weight: 600;
+            font-size: 3.5em;
+            color: #8b6f5a;
+            font-weight: 400;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .rose-symbol {
+            font-size: 2em;
+            color: #c9ada7;
+            margin: 20px 0;
         }
         
         .subtitle {
-            font-size: 1.1em;
-            color: #7d6b5e;
-            font-style: italic;
-        }
-        
-        .faq-item {
-            margin-bottom: 35px;
-            padding-bottom: 30px;
-            border-bottom: 1px solid #e8e8e8;
-        }
-        
-        .faq-item:last-child {
-            border-bottom: none;
-        }
-        
-        .faq-question {
-            color: #5a4a42;
             font-size: 1.3em;
+            color: #8b6f5a;
+            font-style: italic;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        .intro {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px;
+            font-size: 1.1em;
+            color: #5a5a5a;
+            line-height: 1.9;
+            animation: fadeIn 1.5s ease-in;
+        }
+        
+        .phases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .phase-card {
+            background: white;
+            border-radius: 15px;
+            padding: 35px 30px;
+            box-shadow: 0 8px 20px rgba(139, 111, 90, 0.08);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .phase-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--phase-color), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .phase-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(139, 111, 90, 0.15);
+            border-color: var(--phase-color);
+        }
+        
+        .phase-card:hover::before {
+            opacity: 1;
+        }
+        
+        .phase-card.active {
+            border-color: var(--phase-color);
+            box-shadow: 0 12px 35px rgba(139, 111, 90, 0.2);
+        }
+        
+        .phase-card.active::before {
+            opacity: 1;
+        }
+        
+        .reveal { --phase-color: #d4a5a5; }
+        .oracle { --phase-color: #b8a99a; }
+        .speak { --phase-color: #c9ada7; }
+        .embody { --phase-color: #8b6f5a; }
+        
+        .phase-letter {
+            font-size: 3em;
+            color: var(--phase-color);
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-family: 'Georgia', serif;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .phase-title {
+            font-size: 1.5em;
+            color: #5a4a42;
+            margin-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .phase-description {
+            color: #6a6a6a;
+            font-size: 0.95em;
+            line-height: 1.6;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, margin-top 0.5s ease;
+        }
+        
+        .phase-card.active .phase-description {
+            max-height: 500px;
+            margin-top: 15px;
+        }
+        
+        .tools-section {
+            background: white;
+            border-radius: 20px;
+            padding: 50px 40px;
+            box-shadow: 0 10px 30px rgba(139, 111, 90, 0.1);
+            margin-bottom: 50px;
+        }
+        
+        .section-title {
+            font-size: 2em;
+            color: #8b6f5a;
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+        
+        .tool-item {
+            margin-bottom: 35px;
+            padding: 30px;
+            background: #faf9f7;
+            border-radius: 12px;
+            border-left: 4px solid #c9ada7;
+            transition: all 0.3s ease;
+        }
+        
+        .tool-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(139, 111, 90, 0.08);
+        }
+        
+        .tool-title {
+            font-size: 1.4em;
+            color: #5a4a42;
             margin-bottom: 12px;
             font-weight: 600;
         }
         
-        .faq-answer {
-            color: #4a4a4a;
-            font-size: 1em;
+        .tool-description {
+            color: #6a6a6a;
             line-height: 1.7;
+            font-size: 1em;
         }
         
         footer {
-            margin-top: 60px;
-            padding-top: 30px;
-            border-top: 2px solid #7d6b5e;
             text-align: center;
-            color: #7d6b5e;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 2px solid rgba(139, 111, 90, 0.2);
+            color: #8b6f5a;
+            font-style: italic;
         }
         
-        footer p {
-            margin: 10px 0;
-            font-size: 0.95em;
-        }
-        
-        .footer-title {
-            margin-top: 30px;
+        .footer-note {
             font-size: 1.1em;
-            font-weight: 600;
+            margin-bottom: 15px;
         }
         
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-            
+        .cta-section {
+            background: linear-gradient(135deg, #8b6f5a 0%, #a58a7a 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 50px;
+            box-shadow: 0 10px 30px rgba(139, 111, 90, 0.2);
+        }
+        
+        .cta-title {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+        
+        .cta-text {
+            font-size: 1.1em;
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+        
+        @media (max-width: 768px) {
             h1 {
-                font-size: 2em;
+                font-size: 2.5em;
+                letter-spacing: 2px;
             }
             
-            .faq-question {
-                font-size: 1.1em;
+            .phases-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
+            
+            .tools-section, .cta-section {
+                padding: 30px 25px;
+            }
+        }
+        
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Rose Method</h1>
-            <p class="subtitle">Frequently Asked Questions</p>
+            <h1>ROSE METHOD</h1>
+            <div class="rose-symbol">❦</div>
+            <p class="subtitle">Integration Framework for Living Whole</p>
         </header>
 
-        <div class="faq-list">
-            <div class="faq-item">
-                <h3 class="faq-question">What is Rose Method?</h3>
-                <p class="faq-answer">Rose Method is relationship integration work through wound recognition and embodied practice. It helps you see patterns clearly (REVEAL), trust your own knowing (ORACLE), speak truth from integration (SPEAK), and live embodied sovereignty (EMBODY). This applies to romantic partnerships, professional emergence, visibility work, and all relationship dynamics.</p>
+        <div class="intro">
+            <p>Rose Method is integration work for sensitive, intuitive people ready to see clearly, trust deeply, speak truly, and live whole. Through voice embodiment, prophetic fiction, and pattern recognition, we move from knowing to embodying — across all relationships, all contexts, all of life.</p>
+        </div>
+
+        <div class="phases-grid">
+            <div class="phase-card reveal">
+                <div class="phase-letter">R</div>
+                <h2 class="phase-title">REVEAL</h2>
+                <div class="phase-description">
+                    <p>Seeing the patterns, protectors, and stories that keep you stuck. Pattern recognition without judgment. Understanding how protective parts developed and what they're protecting you from. Identifying inherited stories that no longer serve who you're becoming.</p>
+                    <br>
+                    <p><strong>The work:</strong> Seeing what was invisible. Recognizing patterns across contexts. Understanding your protectors as intelligent adaptations, not failures.</p>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3 class="faq-question">Why is Rose Method needed now?</h3>
-                <p class="faq-answer">We live in a culture that rewards independence over interdependence, achievement over relational capacity. Women are told to know their worth but given no pathway to integrate the wounds that make them accept less. Men are told to show up but given no container for their own wound integration. Both people swim upstream against systemic patterns that don't support sustainable partnership. Rose Method addresses pattern recognition at the root, honors mutual accountability, and integrates wounds through public practice.</p>
+            <div class="phase-card oracle">
+                <div class="phase-letter">O</div>
+                <h2 class="phase-title">ORACLE</h2>
+                <div class="phase-description">
+                    <p>Trusting your inner knowing and the wisdom beneath protective noise. Accessing intuition that logic can't reach. Distinguishing between fear voice and truth voice. Building trust in your own perception even without external validation.</p>
+                    <br>
+                    <p><strong>The work:</strong> Knowing what you know. Trusting your body's intelligence. Claiming your intuition as valid data, not something that needs outside permission.</p>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3 class="faq-question">What is Rose Method's deeper service?</h3>
-                <p class="faq-answer">Beyond individual relationships, Rose Method serves the emergence of sustainable partnership culture in a system that actively works against it. The deeper work includes: wound integration that enables sustainable intimacy, bridging independence and interdependence, consciousness development through relationship, modeling integrated emergence publicly, and creating conditions for next-generation relational capacity. This is transgenerational healing work through embodied practice.</p>
+            <div class="phase-card speak">
+                <div class="phase-letter">S</div>
+                <h2 class="phase-title">SPEAK</h2>
+                <div class="phase-description">
+                    <p>Claiming your truth out loud, even when vulnerable. Voice embodiment practices that move from intellectual knowing to authentic speaking. Practicing truth-telling in safe containers before taking it into your life. Speaking what you know but haven't said.</p>
+                    <br>
+                    <p><strong>The work:</strong> Voice without apology. Speaking from integration, not performance. Building capacity to claim truth even when it's uncomfortable or makes you visible.</p>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3 class="faq-question">Is this relationship coaching?</h3>
-                <p class="faq-answer">No. I don't give advice or tell you what to do. I reflect patterns you can't see yet and help you trust what you already know. I use relationship mechanics to help you see clearly: the quality of his presence, where you're accepting less, what patterns are running. What you do with that clarity is your choice.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3 class="faq-question">What are relationship mechanics?</h3>
-                <p class="faq-answer">Relationship mechanics are the underlying patterns of how people actually show up in partnership, beyond what they say or intend. Rose Method uses them to help you see: quality of presence (is his presence full or half?), patterns of availability (what makes you available for partnerships that don't fully meet you?), actions vs. words (what is he actually showing through his presence, time, energy?), and structural vs. substantive commitment (does the relationship have both structure AND substance?). This is about pattern recognition and trusting your body's information, not judging or following dating rules.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3 class="faq-question">Who is this for?</h3>
-                <p class="faq-answer">Women and anyone navigating: relationship dynamics where you accept less than full presence, committed structure with disconnected substance, voice constriction (over-explaining, asking permission to exist), professional/personal splits (visible in one domain, small in another), patterns around visibility and authority (mother/father wounds), overfunctioning partnerships, and integration work across all life domains. If you're in REVEAL (confused about patterns), ORACLE (doubting your knowing), SPEAK (afraid to claim truth), or EMBODY (ready to deepen), this work serves you.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3 class="faq-question">What's the Rose Method process?</h3>
-                <p class="faq-answer">Four phases: REVEAL (seeing patterns and why this keeps happening), ORACLE (trusting your knowing beneath the doubt), SPEAK (voice embodiment and claiming truth without over-explaining), EMBODY (living integrated and choosing from clarity, not wound). You can't skip phases. Integration takes time. This isn't quick-fix work.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3 class="faq-question">What are mother/father wounds?</h3>
-                <p class="faq-answer">Mother wound: patterns around visibility, being seen, taking up space. If I'm visible and imperfect, I'll be abandoned. Overfunctioning to stay safe. Voice constriction, over-explaining, asking permission to exist. Father wound: patterns around authority, trusting your knowing, claiming truth. If I speak without external validation, I'll be wrong. Doubting inner knowing, deferring to external authority, not claiming your work. These aren't about blaming parents. They're developmental patterns that served you once and now create relationship dynamics that don't serve sustainable partnership or emergence. Rose Method integrates these wounds through public practice.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3 class="faq-question">What does committed structure with disconnected substance mean?</h3>
-                <p class="faq-answer">A relationship pattern where the structure is solid (cohabiting, titles, future plans, commitment language) but the substance feels hollow (his presence doesn't match the commitment). You're in a partnership that looks committed but feels disconnected. Your body knows something's missing even though everything looks good. Rose Method helps you see this pattern clearly and understand what wound makes you available for it.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3 class="faq-question">What is half-presence in partnership?</h3>
-                <p class="faq-answer">Half-presence is when someone shows up structurally (they're there, committed, dependable) but not substantively (their emotional availability, devotion, or quality of presence doesn't match). Signs: you feel him as checked out even when physically present, the commitment exists but connection feels missing, you're doing more emotional labor to maintain the relationship, his words say one thing but his energy shows another. The integration work is seeing what wound pattern makes you accept this quality of presence.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3 class="faq-question">How does Rose Method use relationship mechanics?</h3>
-                <p class="faq-answer">Rose Method uses relationship mechanics as a mirror, not as rules or strategies. The mechanics help you see: the quality of his actual presence (not what you hope for), where you're accepting less than full partnership, what patterns are running on both sides, and how systemic dynamics reward protective patterns. This isn't about judging him or yourself, dating strategies, or prescriptive actions. This is about pattern recognition, seeing clearly, trusting what you know, and choosing from integration.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3 class="faq-question">Will Rose Method tell me whether to stay or leave?</h3>
-                <p class="faq-answer">No. Rose Method helps you see patterns clearly. What you do with that clarity is your choice. The work is: REVEAL (see why you're accepting this dynamic), ORACLE (trust what you know about the quality of his presence), SPEAK (voice your truth without over-explaining), EMBODY (choose from integration, not wound or fear). Whether you stay or go, you'll have clarity. That's the work.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3 class="faq-question">Do you work with couples?</h3>
-                <p class="faq-answer">I work with individuals doing their own integration work, which often impacts partnership dynamics. Sustainable partnership requires both people doing wound integration. I can work with one person while creating space for their partner's potential integration. But I don't do couples therapy or relationship fixing.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3 class="faq-question">Do you work with men?</h3>
-                <p class="faq-answer">The patterns Rose Method addresses affect everyone. Most of my content speaks to women's experience because that's what I'm integrating in real-time. Men navigating similar dynamics (voice constriction, protective patterns, integration splits, wound work) benefit from this too. Sustainable partnership requires both people doing integration work.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3 class="faq-question">What does public integration mean?</h3>
-                <p class="faq-answer">Integration through visibility and expression, not despite it. Most people wait to integrate privately, then share polished results. Rose Method: integrate publicly. Post before you're ready, stay visible through nervous, add layers as they emerge, demonstrate real-time wound work. This is the integration practice, not marketing for deeper work. The work itself.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3 class="faq-question">How is Rose Method different from therapy?</h3>
-                <p class="faq-answer">Rose Method is not therapy: no diagnosis, no clinical treatment, no mental health crisis support. It is pattern recognition and integration support: seeing wound patterns in relationship dynamics, voice embodiment practices, prophetic fiction for accessing embodied knowing, public integration practice, practitioner as container/guide (not expert/healer). If you need therapy or clinical support, I'll refer you to appropriate resources.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3 class="faq-question">What if I'm in crisis?</h3>
-                <p class="faq-answer">Rose Method serves developmental integration, not crisis intervention. If you're experiencing active mental health crisis, trauma requiring clinical support, substance abuse needing treatment, or thoughts of self-harm, please reach out to appropriate crisis resources. I'm happy to help you find them. Rose Method is for integration work when you have capacity for pattern recognition and embodied practice.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3 class="faq-question">How do I work with you?</h3>
-                <p class="faq-answer">Join the <a href="https://rosemethod.substack.com" style="color: #7d6b5e; text-decoration: underline;">email list on Substack</a> for deeper content and integration prompts. Book a 1:1 session: <a href="https://calendly.com/hello-risewithrose/90min" style="color: #7d6b5e; text-decoration: underline;">Rose Method Session (Standard Rate)</a> or <a href="https://calendly.com/hello-risewithrose/90-minute-rose-method-session-with-rosalie" style="color: #7d6b5e; text-decoration: underline;">Rose Method Session (Community Rate)</a>. DM me on Instagram with questions.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3 class="faq-question">What if I'm not sure this is for me?</h3>
-                <p class="faq-answer">If you're looking for dating strategies, quick fixes, someone to tell you what to do, certainty before integration, or prescriptive timelines, this isn't it. If you're ready to see patterns clearly (even when uncomfortable), trust what you know (even without external validation), integrate wounds publicly (visibility and authority work), and choose from integration (not protective patterns), this is it. Read my content. See if it lands. You'll know.</p>
+            <div class="phase-card embody">
+                <div class="phase-letter">E</div>
+                <h2 class="phase-title">EMBODY</h2>
+                <div class="phase-description">
+                    <p>Living integrated across all contexts. Building relationships and work that match who you actually are. Sustainable integration — not performing authenticity, but being it. Teaching others from embodied knowing when called.</p>
+                    <br>
+                    <p><strong>The work:</strong> Integration in action. Living as the integrated self you've been becoming. Choosing from clarity rather than wound or protective pattern.</p>
+                </div>
             </div>
         </div>
 
+        <div class="tools-section">
+            <h2 class="section-title">Integration Tools</h2>
+            
+            <div class="tool-item">
+                <h3 class="tool-title">Voice Embodiment</h3>
+                <p class="tool-description">Moving from intellectual knowing to speaking truth authentically. The practice of claiming truth through vocal expression, noticing where voice constricts, and building capacity to speak what's real. This isn't about what you say — it's about how your body responds when you speak truth versus performance.</p>
+            </div>
+
+            <div class="tool-item">
+                <h3 class="tool-title">Prophetic Fiction</h3>
+                <p class="tool-description">A living, evolving narrative of your integrated self. You write yourself as the person already living what you're integrating toward. Not fantasy or affirmations — a bridge between knowing and embodying. You speak it, record it, listen back, and refine based on what your body recognizes as true versus what still feels like performance.</p>
+            </div>
+
+            <div class="tool-item">
+                <h3 class="tool-title">Pattern Recognition</h3>
+                <p class="tool-description">Seeing the patterns that run beneath conscious awareness. Understanding how you move through relationships, where you give your power away, what you're protecting yourself from feeling. Not to judge yourself, but to see clearly enough to choose differently.</p>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2 class="cta-title">Ready to Begin?</h2>
+            <p class="cta-text">Rose Method serves people ready to see their patterns clearly, trust what they know, speak their truth, and live integrated across all areas of life. If you're here, you already know whether this work is for you.</p>
+            <br>
+            <p class="cta-text">Sessions available. Link in bio.</p>
+        </div>
+
         <footer>
-            <p>Questions not answered here?</p>
-            <p>DM me on Instagram or reply to any email.</p>
-            <p class="footer-title">Rose Method</p>
+            <p class="footer-note">Integration is not linear. You'll move through all four phases, spiral back, deepen each one.</p>
+            <p class="footer-note">The work is seeing clearly enough to choose consciously.</p>
+            <br>
+            <p>❦ Rose Method ❦</p>
         </footer>
     </div>
+
+    <script>
+        // Add click functionality to phase cards
+        document.querySelectorAll('.phase-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove active class from all cards
+                document.querySelectorAll('.phase-card').forEach(c => {
+                    if (c !== card) {
+                        c.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current card
+                this.classList.toggle('active');
+            });
+        });
+
+        // Open first card by default
+        setTimeout(() => {
+            document.querySelector('.phase-card').classList.add('active');
+        }, 500);
+    </script>
 </body>
 </html>
